@@ -56,7 +56,7 @@ export const DISHES = [
     label: "",
     price: "1.99",
     description:
-      "Deep fried Zucchini coated with mildly spiced Chickpea flour batter accompanied with a sweet-tangy tamarind sauce",
+      "Deep fried Zucchini coated with mildly spiced Chickpea flour batter accompanied with a sweet-tangy tamarind sauce.",
     comments: [
       {
         id: 0,
@@ -152,7 +152,7 @@ export const DISHES = [
     label: "",
     price: "2.99",
     description:
-      "A delectable, semi-sweet New York Style Cheese Cake, with Graham cracker crust and spiced with Indian cardamoms",
+      "A delectable, semi-sweet New York Style Cheese Cake, with Graham cracker crust and spiced with Indian cardamoms.",
     comments: [
       {
         id: 0,
