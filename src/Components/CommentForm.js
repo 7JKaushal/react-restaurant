@@ -33,7 +33,12 @@ class Comment extends Component {
   }
 
   handleSubmit(values) {
-    alert(JSON.stringify(values));
+    this.props.addComment(
+      this.props.dishId,
+      values.rating,
+      values.author,
+      values.comment
+    );
   }
 
   render() {
