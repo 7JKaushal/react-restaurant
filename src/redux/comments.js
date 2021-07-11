@@ -1,4 +1,3 @@
-import { COMMENTS } from "../shared/comments";
 import * as ActionTypes from "./ActionTypes";
 
 export const Comments = (
@@ -14,7 +13,7 @@ export const Comments = (
         ...state,
         isLoading: false,
         errMsg: null,
-        commment: action.payload,
+        comment: action.payload,
       };
 
     case ActionTypes.COMMENTS_FAILED:
