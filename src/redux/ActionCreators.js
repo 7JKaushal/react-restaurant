@@ -1,15 +1,50 @@
 import * as ActionTypes from "./ActionTypes";
 import baseUrl from "../shared/baseUrl";
 
-export const addComment = (dishId, rating, author, comment) => ({
+export const addComment = (comment) => ({
   type: ActionTypes.ADD_COMMENT,
-  payload: {
+  payload: comment,
+});
+
+export const postComment = (dishId, rating, author, comment) => (dispatch) => {
+  const newComment = {
     dishId,
     rating,
     author,
     comment,
-  },
-});
+  };
+
+  newComment.date = new Date().toISOString();
+  return fetch(baseUrl + "comments", {
+    method: "POST",
+    body: JSON.stringify(newComment),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "same-origin",
+  })
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          let error = new Error(`${response.status} : ${response.statusText}`);
+          error.response = response;
+          throw error;
+        }
+      },
+      (error) => {
+        let errMsg = new Error(error.message);
+        throw errMsg;
+      }
+    )
+    .then((response) => response.json())
+    .then((response) => dispatch(addComment(response)))
+    .catch((error) => {
+      console.log(`${error}`);
+      alert("Comment not submitted");
+    });
+};
 
 // Redux Thunk for Dishes
 export const fetchDishes = () => (dispatch) => {
@@ -117,7 +152,10 @@ export const fetchPromos = () => (dispatch) => {
     )
     .then((response) => response.json())
     .then((promos) => dispatch(addPromos(promos)))
-    .catch((error) => dispatch(promosFailed(error.message)));
+    .catch((error) => {
+      alert(`ALERT! ${error.message}`);
+      dispatch(promosFailed(error.message));
+    });
 };
 export const promosLoading = () => ({
   type: ActionTypes.PROMOS_LOADING,

@@ -27,7 +27,7 @@ const RenderDish = ({ dish }) => {
   );
 };
 
-const RenderComments = ({ comments, addComment, dishId }) => {
+const RenderComments = ({ comments, postComment, dishId }) => {
   let list;
   if (comments != null) {
     list = comments.map((comment) => {
@@ -53,7 +53,7 @@ const RenderComments = ({ comments, addComment, dishId }) => {
       <h4>Comments</h4>
       {list}
       <br />
-      <Comment dishId={dishId} addComment={addComment} />
+      <Comment dishId={dishId} postComment={postComment} />
     </div>
   );
 };
@@ -97,7 +97,7 @@ const DishDetail = (props) => {
           <div className="col-12 col-md-5 mt-1">
             <RenderComments
               comments={props.comments}
-              addComment={props.addComment}
+              postComment={props.postComment}
               dishId={props.dish.id}
             />
           </div>
