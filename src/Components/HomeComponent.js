@@ -8,25 +8,29 @@ import {
   CardSubtitle,
 } from "reactstrap";
 import { Loading } from "./LoadingComponent";
-
+import baseUrl from "../shared/baseUrl";
 const RenderCard = ({ item, isLoading, errMsg }) => {
   if (isLoading) {
     return <Loading />;
   } else if (errMsg) {
     return <h4>{errMsg}</h4>;
   } else {
-    return (
-      <Card>
-        <CardImg src={item.image} alt={item.name} />
-        <CardBody>
-          <CardTitle>{item.name}</CardTitle>
-          {item.designation ? (
-            <CardSubtitle>{item.designation}</CardSubtitle>
-          ) : null}
-          <CardText>{item.description}</CardText>
-        </CardBody>
-      </Card>
-    );
+    if (item !== undefined) {
+      return (
+        <Card>
+          <CardImg src={baseUrl + item.image} alt={item.name} />
+          <CardBody>
+            <CardTitle>{item.name}</CardTitle>
+            {item.designation ? (
+              <CardSubtitle>{item.designation}</CardSubtitle>
+            ) : null}
+            <CardText>{item.description}</CardText>
+          </CardBody>
+        </Card>
+      );
+    } else {
+      return <div></div>;
+    }
   }
 };
 
@@ -42,7 +46,11 @@ const Home = (props) => {
           />
         </div>
         <div className="col-12 col-md m-1">
-          <RenderCard item={props.promo} />
+          <RenderCard
+            item={props.promotions}
+            isLoading={props.promosLoading}
+            errMsg={props.promosErrMsg}
+          />
         </div>
         <div className="col-12 col-md m-1">
           <RenderCard item={props.leader} />

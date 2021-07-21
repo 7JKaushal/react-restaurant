@@ -29,19 +29,20 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   addComment: (dishId, rating, author, comment) =>
     dispatch(addComment(dishId, rating, author, comment)),
+
   fetchDishes: () => {
     dispatch(fetchDishes());
   },
+
   resetFeedbackForm: () => {
     dispatch(actions.reset("feedback"));
   },
-  fetchComments: () => {
-    dispatch(fetchComments());
-  },
-  fetchPromos: () => {
-    dispatch(fetchPromos());
-  },
+
+  fetchComments: () => dispatch(fetchComments()),
+
+  fetchPromos: () => dispatch(fetchPromos()),
 });
+
 class Main extends Component {
   componentDidMount() {
     this.props.fetchDishes();
@@ -55,14 +56,14 @@ class Main extends Component {
         <Home
           dish={this.props.dishes.dishes.filter((dish) => dish.featured)[0]}
           dishesLoading={this.props.dishes.isLoading}
-          dishesErrMsg={this.props.dishes.errMsg}
-          promo={
+          dishErrMsg={this.props.dishes.errMsg}
+          promotion={
             this.props.promotions.promotions.filter(
               (promo) => promo.featured
             )[0]
           }
-          promosLoading={this.props.promotions.isLoading}
-          promosErrMsg={this.props.promotions.errMsg}
+          promoLoading={this.props.promotions.isLoading}
+          promoErrMsg={this.props.promotions.errMsg}
           leader={this.props.leaders.filter((leader) => leader.featured)[0]}
         />
       );

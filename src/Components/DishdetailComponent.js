@@ -11,12 +11,13 @@ import {
 import { Link } from "react-router-dom";
 import Comment from "./CommentForm";
 import { Loading } from "./LoadingComponent";
+import baseURL from "../shared/baseUrl";
 
 const RenderDish = ({ dish }) => {
   return (
     <div>
       <Card>
-        <CardImg width="100%" src={dish.image} alt={dish.name} />
+        <CardImg width="100%" src={baseURL + dish.image} alt={dish.name} />
         <CardBody>
           <CardTitle> {dish.name} </CardTitle>
           <CardText>{dish.description}</CardText>
