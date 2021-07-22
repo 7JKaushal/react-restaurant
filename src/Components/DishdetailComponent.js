@@ -8,6 +8,8 @@ import {
   Breadcrumb,
   BreadcrumbItem,
 } from "reactstrap";
+import { FadeTransform, Fade, Stagger } from "react-animation-components";
+
 import { Link } from "react-router-dom";
 import Comment from "./CommentForm";
 import { Loading } from "./LoadingComponent";
@@ -16,13 +18,20 @@ import baseURL from "../shared/baseUrl";
 const RenderDish = ({ dish }) => {
   return (
     <div>
-      <Card>
-        <CardImg width="100%" src={baseURL + dish.image} alt={dish.name} />
-        <CardBody>
-          <CardTitle> {dish.name} </CardTitle>
-          <CardText>{dish.description}</CardText>
-        </CardBody>
-      </Card>
+      <FadeTransform
+        in
+        transformProps={{
+          exitTransform: "scale(0.5) translateY(-50%)",
+        }}
+      >
+        <Card>
+          <CardImg width="100%" src={baseURL + dish.image} alt={dish.name} />
+          <CardBody>
+            <CardTitle> {dish.name} </CardTitle>
+            <CardText>{dish.description}</CardText>
+          </CardBody>
+        </Card>
+      </FadeTransform>
     </div>
   );
 };
@@ -32,16 +41,18 @@ const RenderComments = ({ comments, postComment, dishId }) => {
   if (comments != null) {
     list = comments.map((comment) => {
       return (
-        <li key={comment.id} className="list-unstyled">
-          <br />
-          {comment.comment} <br />
-          -- {comment.author},{" "}
-          {new Intl.DateTimeFormat("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "2-digit",
-          }).format(new Date(Date.parse(comment.date)))}
-        </li>
+        <Fade in>
+          <li key={comment.id} className="list-unstyled">
+            <br />
+            {comment.comment} <br />
+            -- {comment.author},{" "}
+            {new Intl.DateTimeFormat("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "2-digit",
+            }).format(new Date(Date.parse(comment.date)))}
+          </li>
+        </Fade>
       );
     });
   } else {
@@ -50,10 +61,12 @@ const RenderComments = ({ comments, postComment, dishId }) => {
 
   return (
     <div>
-      <h4>Comments</h4>
-      {list}
-      <br />
-      <Comment dishId={dishId} postComment={postComment} />
+      <Stagger in>
+        <h4>Comments</h4>
+        {list}
+        <br />
+        <Comment dishId={dishId} postComment={postComment} />
+      </Stagger>
     </div>
   );
 };
