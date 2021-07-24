@@ -170,3 +170,39 @@ export const addPromos = (promos) => ({
   type: ActionTypes.ADD_PROMOS,
   payload: promos,
 });
+
+// Redux Thunk for Leaders
+export const fetchLeaders = () => (dispatch) => {
+  return fetch(baseUrl + "leaders")
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          let error = new Error(`${response.status} : ${response.statusText}`);
+          error.response = response;
+          throw error;
+        }
+      },
+      (error) => {
+        let errMsg = new Error(error.message);
+        throw errMsg;
+      }
+    )
+    .then((response) => response.json())
+    .then((leaders) => dispatch(addLeaders(leaders)))
+    .catch((error) => dispatch(leadersFailed(error.message)));
+};
+
+export const leadersLoading = () => ({
+  type: ActionTypes.PROMOS_LOADING,
+});
+export const leadersFailed = (errMsg) => ({
+  type: ActionTypes.LEADERS_FAILED,
+  payload: errMsg,
+});
+
+export const addLeaders = (leaders) => ({
+  type: ActionTypes.ADD_LEADERS,
+  payload: leaders,
+});

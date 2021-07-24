@@ -11,6 +11,7 @@ import { FadeTransform } from "react-animation-components";
 
 import { Loading } from "./LoadingComponent";
 import baseUrl from "../shared/baseUrl";
+
 const RenderCard = ({ item, isLoading, errMsg }) => {
   if (isLoading) {
     return <Loading />;
