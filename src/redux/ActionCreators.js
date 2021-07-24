@@ -1,9 +1,59 @@
 import * as ActionTypes from "./ActionTypes";
 import baseUrl from "../shared/baseUrl";
 
-export const addComment = (comment) => ({
-  type: ActionTypes.ADD_COMMENT,
-  payload: comment,
+export const postFeedback =
+  (firstName, lastName, telnum, email, agree, contactType, feedback) =>
+  (dispatch) => {
+    const newFeedback = {
+      firstName,
+      lastName,
+      telnum,
+      email,
+      agree,
+      contactType,
+      feedback,
+    };
+    newFeedback.date = new Date().toDateString();
+
+    return fetch(baseUrl + "feedback", {
+      method: "POST",
+      body: JSON.stringify(newFeedback),
+      headers: {
+        "Content-type": "application/json",
+      },
+      credentials: "same-origin",
+    })
+      .then(
+        (response) => {
+          if (response.ok) {
+            return response;
+          } else {
+            let error = new Error(
+              `${response.status} : ${response.statusText}`
+            );
+            error.response = response;
+            throw error;
+          }
+        },
+        (error) => {
+          let errMsg = new Error(error.message);
+          throw errMsg;
+        }
+      )
+      .then((response) => response.json())
+      .then((response) => {
+        alert(JSON.stringify(response));
+        dispatch(addFeedback(response));
+      })
+      .catch((error) => {
+        console.log(`${error}`);
+        alert("Feedback not submitted");
+      });
+  };
+
+export const addFeedback = (feedback) => ({
+  type: ActionTypes.POST_FEEDBACK,
+  payload: feedback,
 });
 
 export const postComment = (dishId, rating, author, comment) => (dispatch) => {
@@ -45,6 +95,11 @@ export const postComment = (dishId, rating, author, comment) => (dispatch) => {
       alert("Comment not submitted");
     });
 };
+
+export const addComment = (comment) => ({
+  type: ActionTypes.ADD_COMMENT,
+  payload: comment,
+});
 
 // Redux Thunk for Dishes
 export const fetchDishes = () => (dispatch) => {
@@ -157,6 +212,7 @@ export const fetchPromos = () => (dispatch) => {
       dispatch(promosFailed(error.message));
     });
 };
+
 export const promosLoading = () => ({
   type: ActionTypes.PROMOS_LOADING,
 });
@@ -197,6 +253,7 @@ export const fetchLeaders = () => (dispatch) => {
 export const leadersLoading = () => ({
   type: ActionTypes.PROMOS_LOADING,
 });
+
 export const leadersFailed = (errMsg) => ({
   type: ActionTypes.LEADERS_FAILED,
   payload: errMsg,
