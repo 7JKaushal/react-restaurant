@@ -225,6 +225,14 @@
       "comment": "Ek plate medu vada extra chatni marke",
       "date": "2021-07-24T18:39:16.035Z",
       "id": 22
+    },
+    {
+      "dishId": 1,
+      "rating": "4",
+      "author": "Kaushal Joshi",
+      "comment": "no dish can be as delicious as Zucchipakoda",
+      "date": "2021-07-24T18:56:05.279Z",
+      "id": 23
     }
   ],
   "promotions": [

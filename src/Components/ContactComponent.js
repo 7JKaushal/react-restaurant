@@ -36,8 +36,6 @@ class Contact extends Component {
       values.contactType,
       values.message
     );
-
-    // alert(JSON.stringify(values));
     this.props.resetFeedbackForm();
   }
 
@@ -89,7 +87,11 @@ class Contact extends Component {
               >
                 <i className="fa fa-phone"></i> Call
               </a>
-              <a role="button" className="btn btn-info" href="#">
+              <a
+                role="button"
+                className="btn btn-info"
+                href="https://www.skype.com/en/"
+              >
                 <i className="fa fa-skype"></i> Skype
               </a>
               <a

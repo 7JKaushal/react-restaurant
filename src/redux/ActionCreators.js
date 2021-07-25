@@ -1,6 +1,7 @@
 import * as ActionTypes from "./ActionTypes";
 import baseUrl from "../shared/baseUrl";
 
+// Redux Thunk for posting a new feedback
 export const postFeedback =
   (firstName, lastName, telnum, email, agree, contactType, feedback) =>
   (dispatch) => {
@@ -14,6 +15,12 @@ export const postFeedback =
       feedback,
     };
     newFeedback.date = new Date().toDateString();
+
+    /* First .then() checks if there is any error while receiving data from the server
+     * if response code is anything other than 200 (status OK), New error is generated (else block : line 37-43)
+     * if there is error without any response code, code from line 45-48 is executed.
+     * Error is catch-ed at line 55 and dishesFailed is dispatched.
+     */
 
     return fetch(baseUrl + "feedback", {
       method: "POST",
@@ -105,35 +112,25 @@ export const addComment = (comment) => ({
 export const fetchDishes = () => (dispatch) => {
   dispatch(dishesLoading(true));
 
-  return (
-    fetch(baseUrl + "dishes")
-      /* First .then() checks if there is any error while receiving data from the server
-       * if response code is anything other than 200 (status OK), New error is generated (line 25-29)
-       * if there is error without any response code, code from line 32-35 is executed.
-       * Error is catch-ed at line 40 and dishesFailed is dispatched.
-       */
-
-      .then(
-        (response) => {
-          if (response.ok) {
-            return response;
-          } else {
-            let error = new Error(
-              `${response.status} : ${response.statusText}`
-            );
-            error.response = response;
-            throw error;
-          }
-        },
-        (error) => {
-          let errMsg = new Error(error.message);
-          throw errMsg;
+  return fetch(baseUrl + "dishes")
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          let error = new Error(`${response.status} : ${response.statusText}`);
+          error.response = response;
+          throw error;
         }
-      )
-      .then((response) => response.json())
-      .then((dishes) => dispatch(addDishes(dishes)))
-      .catch((error) => dispatch(dishesFailed(error.message)))
-  );
+      },
+      (error) => {
+        let errMsg = new Error(error.message);
+        throw errMsg;
+      }
+    )
+    .then((response) => response.json())
+    .then((dishes) => dispatch(addDishes(dishes)))
+    .catch((error) => dispatch(dishesFailed(error.message)));
 };
 
 export const dishesLoading = () => ({
