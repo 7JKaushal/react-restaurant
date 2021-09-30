@@ -20,6 +20,7 @@ const RenderLeader = (props) => {
             object
             src={baseUrl + props.leader.image}
             alt={props.leader.name}
+            className="leader"
           />
         </Media>
         <Media body className="ml-5">
